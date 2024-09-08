@@ -1,0 +1,44 @@
+{
+   "upgrades": [
+      {
+         "id": 1,
+         "name": "Auto Clicker",
+         "cost": 100,
+         "effect": "+1 click per second",
+         "rarity": "common",
+         "maxLevel": 5,
+         "level": 0,
+         "unlocked": true
+      },
+      {
+         "id": 2,
+         "name": "Double Click",
+         "cost": 500,
+         "effect": "Double the value of each click",
+         "rarity": "rare",
+         "maxLevel": 3,
+         "level": 0,
+         "unlocked": false
+      },
+      {
+         "id": 3,
+         "name": "Triple Click",
+         "cost": 1500,
+         "effect": "Triple the value of each click",
+         "rarity": "epic",
+         "maxLevel": 2,
+         "level": 0,
+         "unlocked": false
+      },
+      {
+         "id": 4,
+         "name": "Mega Clicker",
+         "cost": 3000,
+         "effect": "Add 5 clicks per second",
+         "rarity": "legendary",
+         "maxLevel": 1,
+         "level": 0,
+         "unlocked": false
+      }
+   ]
+}

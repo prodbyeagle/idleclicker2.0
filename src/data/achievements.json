@@ -1,0 +1,64 @@
+{
+   "achievements": [
+      {
+         "id": 1,
+         "name": "Erster Klick",
+         "description": "Erreiche 10 Klicks",
+         "reward": "10 Bonuspunkte",
+         "rarity": "common",
+         "unlocked": false,
+         "type": "clicks",
+         "threshold": 10
+      },
+      {
+         "id": 2,
+         "name": "Klick-Meister",
+         "description": "Erreiche 100 Klicks",
+         "reward": "50 Bonuspunkte",
+         "rarity": "rare",
+         "unlocked": false,
+         "type": "clicks",
+         "threshold": 100
+      },
+      {
+         "id": 3,
+         "name": "Klick-Legende",
+         "description": "Erreiche 1000 Klicks",
+         "reward": "100 Bonuspunkte",
+         "rarity": "epic",
+         "unlocked": false,
+         "type": "clicks",
+         "threshold": 1000
+      },
+      {
+         "id": 4,
+         "name": "Upgrades Guru",
+         "description": "Kaufe 5 Upgrades",
+         "reward": "20 Bonuspunkte",
+         "rarity": "rare",
+         "unlocked": false,
+         "type": "upgrades",
+         "threshold": 5
+      },
+      {
+         "id": 5,
+         "name": "Mega-Klicker",
+         "description": "Erreiche 1.000.000 Punkte",
+         "reward": "500 Bonuspunkte",
+         "rarity": "legendary",
+         "unlocked": false,
+         "type": "points",
+         "threshold": 1000000
+      },
+      {
+         "id": 6,
+         "name": "Schneller Fortschritt",
+         "description": "Erreiche Level 10 in einem Upgrade",
+         "reward": "100 Bonuspunkte",
+         "rarity": "epic",
+         "unlocked": false,
+         "type": "upgrades",
+         "threshold": 10
+      }
+   ]
+}

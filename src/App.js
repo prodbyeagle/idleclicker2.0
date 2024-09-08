@@ -13,11 +13,11 @@ const App = () => {
   const [isUpgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [isAchievementsModalOpen, setAchievementsModalOpen] = useState(false);
   const [achievements, setAchievements] = useState([]);
-  const [points, setPoints] = useState(0);
-  const [upgradesCount, setUpgradesCount] = useState(0);
   // eslint-disable-next-line
-  const [upgradesLevels, setUpgradesLevels] = useState({});
-  const [settings, setSettings] = useState({ language: 'en' });
+  const [points, setPoints] = useState(0);
+  // eslint-disable-next-line
+  const [upgradesCount, setUpgradesCount] = useState(0);
+  const [isCollapsed, setIsCollapsed] = useState(false); // Track sidebar collapse
 
   useEffect(() => {
     if (activeTab === 'achievements') {
@@ -26,59 +26,34 @@ const App = () => {
   }, [activeTab]);
 
   useEffect(() => {
-    const updatedAchievements = achievements.map((achievement) => {
-      if (!achievement.unlocked) {
-        if (achievement.type === 'clicks' && points >= achievement.threshold) {
-          return { ...achievement, unlocked: true };
-        }
-        if (achievement.type === 'upgrades' && upgradesCount >= achievement.threshold) {
-          return { ...achievement, unlocked: true };
-        }
-        if (achievement.type === 'points' && points >= achievement.threshold) {
-          return { ...achievement, unlocked: true };
-        }
-      }
-      return achievement;
-    });
+    const handleResize = () => {
+      setIsCollapsed(window.innerWidth < 768);
+    };
 
-    const sortedAchievements = updatedAchievements.sort((a, b) => {
-      const rarityOrder = { 'common': 1, 'rare': 2, 'epic': 3, 'legendary': 4 };
-      return rarityOrder[a.rarity] - rarityOrder[b.rarity];
-    });
+    window.addEventListener('resize', handleResize);
+    handleResize();
 
-    setAchievements(sortedAchievements);
-    // eslint-disable-next-line
-  }, [points, upgradesCount]);
-
-  const handleSettingsChange = (newSettings) => {
-    setSettings(newSettings);
-  };
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="flex h-screen bg-neutral-900 text-neutral-100">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        setUpgradeModalOpen={setUpgradeModalOpen}
-        setAchievementsModalOpen={setAchievementsModalOpen}
       />
-      <div className="flex-1 p-8 ml-64">
+      <div className={`flex-1 p-8 transition-all duration-300 ${isCollapsed ? 'ml-16' : 'ml-64'}`}>
         {activeTab === 'home' && (
           <IdleClicker
             setPoints={setPoints}
             setUpgradesCount={setUpgradesCount}
-            setUpgradesLevels={setUpgradesLevels}
           />
         )}
         {activeTab === 'upgrades' && (
-          <Upgrades
-          />
+          <Upgrades />
         )}
         {activeTab === 'settings' && (
-          <Settings
-            settings={settings}
-            onSettingsChange={handleSettingsChange}
-          />
+          <Settings />
         )}
         {activeTab === 'achievements' && (
           <div className="space-y-4">

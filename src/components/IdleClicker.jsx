@@ -2,33 +2,71 @@ import React, { useState, useRef, useEffect } from 'react';
 import Button from './Button';
 import { useTranslation } from 'react-i18next';
 import { loadUserData, saveUserData } from '../utils/userData';
+import formatNumber from '../utils/formatNumber';
+import upgradeData from '../data/upgrades.json'; // Import upgrade data
 
 const IdleClicker = () => {
    const { t, i18n } = useTranslation();
    const [points, setPoints] = useState(0);
    const [isCoolingDown, setIsCoolingDown] = useState(false);
+   const [userUpgrades, setUserUpgrades] = useState([]);
    const cooldownTimer = useRef(null);
 
    useEffect(() => {
-      // Lade UserData inklusive der gespeicherten Punkte und Sprache
-      const { points: savedPoints, settings } = loadUserData();
+      const { points: savedPoints, settings, upgrades } = loadUserData();
       setPoints(savedPoints || 0);
+      setUserUpgrades(upgrades || []);
 
       if (settings?.language) {
          i18n.changeLanguage(settings.language);
       }
    }, [i18n]);
 
+   const applyUpgrades = () => {
+      let totalClickBonus = 0;
+      let clickMultiplier = 1;
+
+      userUpgrades.forEach((userUpgrade) => {
+         const upgradeDefinition = upgradeData.upgrades.find(u => u.id === userUpgrade.id);
+         if (upgradeDefinition && userUpgrade.level > 0) {
+            const upgradeLevel = userUpgrade.level;
+            switch (upgradeDefinition.name) {
+               case 'Auto Clicker':
+                  // totalClickBonus += upgradeDefinition.levels[upgradeLevel] || 0;
+                  break;
+               case 'Double Click':
+                  clickMultiplier = Math.max(clickMultiplier, upgradeLevel * 2);
+                  break;
+               case 'Triple Click':
+                  clickMultiplier = Math.max(clickMultiplier, upgradeLevel * 3);
+                  break;
+               case 'Mega Clicker':
+                  totalClickBonus += 5 * (upgradeLevel + 1);
+                  break;
+               case 'Multiplier Boost':
+                  clickMultiplier *= upgradeLevel + 2;
+                  break;
+               default:
+                  break;
+            }
+         }
+      });
+
+      return { totalClickBonus, clickMultiplier };
+   };
+
    const handleClick = () => {
       if (isCoolingDown) return;
 
-      setPoints((prevPoints) => {
-         const newPoints = prevPoints + 1;
+      const { totalClickBonus, clickMultiplier } = applyUpgrades();
 
-         // Speichere die neuen Punkte und die aktuelle Sprache
+      setPoints((prevPoints) => {
+         const pointsEarned = 1 * clickMultiplier + totalClickBonus;
+         const newPoints = prevPoints + pointsEarned;
          const data = {
-            points: newPoints, // Keine doppelte userData-Ebene
-            settings: { language: i18n.language }
+            points: newPoints,
+            settings: { language: i18n.language },
+            upgrades: userUpgrades
          };
          saveUserData(data);
 
@@ -39,13 +77,14 @@ const IdleClicker = () => {
 
       cooldownTimer.current = setTimeout(() => {
          setIsCoolingDown(false);
-      }, 5);
+      }, 50);
    };
 
    return (
       <div className="min-h-screen bg-neutral-900 text-neutral-100 flex flex-col items-center justify-center">
          <h1 className="text-4xl font-bold mb-4">Idle Clicker 2.0</h1>
-         <p className="text-2xl mb-4">{t('points')}: {points}</p>
+         <p className="text-2xl mb-4">{t('points')}: {formatNumber(points)}</p>
+         <p className="text-xl mb-4">{points}</p>
          <Button
             onClick={handleClick}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg active:scale-95"

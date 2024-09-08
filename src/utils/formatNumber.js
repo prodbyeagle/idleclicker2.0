@@ -19,7 +19,7 @@ const formatNumber = (value) => {
 
    // Format the number to one decimal place if needed
    const scaled = value / scale;
-   return scaled.toFixed(1) + suffix;
+   return scaled.toFixed(2) + suffix;
 };
 
 export default formatNumber;

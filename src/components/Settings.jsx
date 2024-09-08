@@ -94,6 +94,34 @@ const Settings = () => {
       }
    };
 
+   const add500kPoints = () => {
+      const userData = loadUserData();
+      userData.points = (userData.points || 0) + 500000;
+      saveUserData(userData);
+      debugLog('Added 500k points. New points total:', userData.points);
+   };
+
+   const add1mPoints = () => {
+      const userData = loadUserData();
+      userData.points = (userData.points || 0) + 1000000;
+      saveUserData(userData);
+      debugLog('Added 500k points. New points total:', userData.points);
+   };
+
+   const add10mPoints = () => {
+      const userData = loadUserData();
+      userData.points = (userData.points || 0) + 10000000;
+      saveUserData(userData);
+      debugLog('Added 500k points. New points total:', userData.points);
+   };
+
+   const add100mPoints = () => {
+      const userData = loadUserData();
+      userData.points = (userData.points || 0) + 100000000;
+      saveUserData(userData);
+      debugLog('Added 500k points. New points total:', userData.points);
+   };
+
    return (
       <div className="space-y-4">
          <h2 className="text-3xl font-semibold mb-6">{t('settings')}</h2>
@@ -140,6 +168,35 @@ const Settings = () => {
                      className="hidden"
                   />
                </label>
+
+               <Button
+                  onClick={add500kPoints}
+                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white"
+                  variant="primary"
+               >
+                  Add 500k Points
+               </Button>
+               <Button
+                  onClick={add1mPoints}
+                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white"
+                  variant="primary"
+               >
+                  Add 1m Points
+               </Button>
+               <Button
+                  onClick={add10mPoints}
+                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white"
+                  variant="primary"
+               >
+                  Add 10m Points
+               </Button>
+               <Button
+                  onClick={add100mPoints}
+                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white"
+                  variant="primary"
+               >
+                  Add 100m Points
+               </Button>
             </div>
          </div>
 

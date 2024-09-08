@@ -42,5 +42,6 @@
    "upgradeDescription": "Description",
    "upgradeCost": "Cost",
    "buyUpgrade": "Buy Upgrade",
-   "maxLevelReached": "Max Level Reached"
+   "maxLevelReached": "✅ Max Level Reached",
+   "maxedUpgrade": "✅ Maxed Upgrade"
 }

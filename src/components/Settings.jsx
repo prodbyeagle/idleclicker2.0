@@ -61,7 +61,7 @@ const Settings = () => {
             try {
                const data = JSON.parse(e.target.result);
                const preview = {
-                  points: data.userData?.points ? formatNumber(data.userData.points) : 'N/A',
+                  points: data.points ? formatNumber(data.points) : 'N/A',
                   language: data.settings?.language || 'N/A'
                };
                setImportPreview(preview);

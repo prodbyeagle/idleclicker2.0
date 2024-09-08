@@ -40,7 +40,7 @@ const IdleClicker = () => {
 
       cooldownTimer.current = setTimeout(() => {
          setIsCoolingDown(false);
-      }, 50);
+      }, 5);
    };
 
    return (

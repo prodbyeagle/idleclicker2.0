@@ -3,50 +3,28 @@ import { useTranslation } from 'react-i18next';
 import IdleClicker from './components/IdleClicker';
 import Sidebar from './components/Sidebar';
 import Modal from './components/Modal';
-import Settings from './components/Settings'; // Import the Settings component
+import Settings from './components/Settings';
+import Upgrades from './components/Upgrades';
 import achievementsData from './data/achievements.json';
-import { loadUserData, saveUserData } from './utils/userData';
 
 const App = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('upgrades');
+  const [activeTab, setActiveTab] = useState('home');
   const [isUpgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [isAchievementsModalOpen, setAchievementsModalOpen] = useState(false);
   const [achievements, setAchievements] = useState([]);
   const [points, setPoints] = useState(0);
   const [upgradesCount, setUpgradesCount] = useState(0);
+  // eslint-disable-next-line
   const [upgradesLevels, setUpgradesLevels] = useState({});
   const [settings, setSettings] = useState({ language: 'en' });
 
-  // Load saved data from localStorage
-  useEffect(() => {
-    const { gameSave, settings } = loadUserData();
-    setPoints(gameSave?.points || 0);
-    setUpgradesCount(gameSave?.upgradesCount || 0);
-    setUpgradesLevels(gameSave?.upgradesLevels || {});
-    setSettings(settings || { language: 'en' });
-  }, []);
-
-  // Save data to localStorage
-  useEffect(() => {
-    saveUserData({
-      gameSave: {
-        points,
-        upgradesCount,
-        upgradesLevels,
-      },
-      settings
-    });
-  }, [points, upgradesCount, upgradesLevels, settings]);
-
-  // Load achievements data when activeTab changes
   useEffect(() => {
     if (activeTab === 'achievements') {
       setAchievements(achievementsData.achievements);
     }
   }, [activeTab]);
 
-  // Update achievements based on points and upgrades
   useEffect(() => {
     const updatedAchievements = achievements.map((achievement) => {
       if (!achievement.unlocked) {
@@ -69,6 +47,7 @@ const App = () => {
     });
 
     setAchievements(sortedAchievements);
+    // eslint-disable-next-line
   }, [points, upgradesCount]);
 
   const handleSettingsChange = (newSettings) => {
@@ -84,11 +63,15 @@ const App = () => {
         setAchievementsModalOpen={setAchievementsModalOpen}
       />
       <div className="flex-1 p-8 ml-64">
-        {activeTab === 'upgrades' && (
+        {activeTab === 'home' && (
           <IdleClicker
             setPoints={setPoints}
             setUpgradesCount={setUpgradesCount}
             setUpgradesLevels={setUpgradesLevels}
+          />
+        )}
+        {activeTab === 'upgrades' && (
+          <Upgrades
           />
         )}
         {activeTab === 'settings' && (
@@ -110,7 +93,7 @@ const App = () => {
                   <h3 className="text-xl font-bold mb-2">{t(`achievement_${achievement.id}_name`)}</h3>
                   <p className="text-lg mb-2">{t('description')}: {t(`achievement_${achievement.id}_description`)}</p>
                   <p className="text-lg mb-2">{t('reward')}: {achievement.reward}</p>
-                  <p className="text-lg mb-2">{t('unlocked')}: {achievement.unlocked ? t('yes') : t('no')}</p>
+                  <p className="text-lg mb-2">{t('unlocked')}: {achievement.unlocked ? t('✅') : t('❌')}</p>
                 </div>
               ))
             ) : (
@@ -120,7 +103,6 @@ const App = () => {
         )}
       </div>
 
-      {/* Modals in App.js */}
       <Modal isOpen={isUpgradeModalOpen} onClose={() => setUpgradeModalOpen(false)}>
         <h2 className="text-3xl font-semibold mb-6">{t('availableUpgrades')}</h2>
         <IdleClicker modalType="upgrades" />
@@ -129,7 +111,6 @@ const App = () => {
       <Modal isOpen={isAchievementsModalOpen} onClose={() => setAchievementsModalOpen(false)}>
         <h2 className="text-3xl font-semibold mb-6">{t('achievements')}</h2>
         <div className="space-y-4">
-          {/* Placeholder for achievements content */}
           <p className="text-lg">{t('noAchievements')}</p>
         </div>
       </Modal>
@@ -140,15 +121,15 @@ const App = () => {
 const getRarityColor = (rarity) => {
   switch (rarity) {
     case 'common':
-      return '#4CAF50'; // Green
+      return '#4CAF50';
     case 'rare':
-      return '#2196F3'; // Blue
+      return '#2196F3';
     case 'epic':
-      return '#9C27B0'; // Purple
+      return '#9C27B0';
     case 'legendary':
-      return '#F44336'; // Red
+      return '#ffd700';
     default:
-      return '#9E9E9E'; // Default Gray
+      return '#9E9E9E';
   }
 };
 

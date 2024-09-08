@@ -26,5 +26,21 @@
    "achievement_6_description": "Reach level 10 in an upgrade",
    "idleClicker": "Idle Clicker",
    "points": "Points",
-   "clickButton": "Click!"
+   "clickButton": "Click!",
+   "confirmReset": "Are you sure you want to reset the data?",
+   "confirmExport": "Are you sure you want to export the data?",
+   "dataReset": "Data has been reset.",
+   "dataImported": "Data imported successfully.",
+   "dataImportError": "Error importing data.",
+   "resetData": "Reset Data",
+   "exportData": "Export Data",
+   "importData": "Import Data",
+   "acceptImport": "Accept Import",
+   "declineImport": "Decline Import",
+   "importPreview": "Import Preview",
+   "upgrades": "Upgrades",
+   "upgradeDescription": "Description",
+   "upgradeCost": "Cost",
+   "buyUpgrade": "Buy Upgrade",
+   "maxLevelReached": "Max Level Reached"
 }

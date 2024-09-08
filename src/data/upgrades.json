@@ -7,6 +7,13 @@
          "effect": "+1 click per second",
          "rarity": "common",
          "maxLevel": 5,
+         "levels": {
+            "1": "+1 click per second",
+            "2": "+2 clicks per second",
+            "3": "+3 clicks per second",
+            "4": "+4 clicks per second",
+            "5": "+5 clicks per second"
+         },
          "level": 0,
          "unlocked": true
       },
@@ -17,6 +24,11 @@
          "effect": "Double the value of each click",
          "rarity": "rare",
          "maxLevel": 3,
+         "levels": {
+            "1": "Double the value of each click",
+            "2": "Triple the value of each click",
+            "3": "Quadruple the value of each click"
+         },
          "level": 0,
          "unlocked": false
       },
@@ -27,6 +39,10 @@
          "effect": "Triple the value of each click",
          "rarity": "epic",
          "maxLevel": 2,
+         "levels": {
+            "1": "Triple the value of each click",
+            "2": "Quadruple the value of each click"
+         },
          "level": 0,
          "unlocked": false
       },
@@ -37,6 +53,68 @@
          "effect": "Add 5 clicks per second",
          "rarity": "legendary",
          "maxLevel": 1,
+         "levels": {
+            "1": "Add 5 clicks per second"
+         },
+         "level": 0,
+         "unlocked": false
+      },
+      {
+         "id": 5,
+         "name": "Speed Boost",
+         "cost": 2000,
+         "effect": "Increase click speed by 50%",
+         "rarity": "rare",
+         "maxLevel": 3,
+         "levels": {
+            "1": "Increase click speed by 50%",
+            "2": "Increase click speed by 75%",
+            "3": "Increase click speed by 100%"
+         },
+         "level": 0,
+         "unlocked": false
+      },
+      {
+         "id": 6,
+         "name": "Multiplier Boost",
+         "cost": 5000,
+         "effect": "Increase point multiplier by 2x",
+         "rarity": "epic",
+         "maxLevel": 2,
+         "levels": {
+            "1": "Increase point multiplier by 2x",
+            "2": "Increase point multiplier by 3x"
+         },
+         "level": 0,
+         "unlocked": false
+      },
+      {
+         "id": 7,
+         "name": "Click Frenzy",
+         "cost": 10000,
+         "effect": "Double the points for the next 10 clicks",
+         "rarity": "legendary",
+         "maxLevel": 1,
+         "levels": {
+            "1": "Double the points for the next 10 clicks"
+         },
+         "level": 0,
+         "unlocked": false
+      },
+      {
+         "id": 8,
+         "name": "Auto Clicker II",
+         "cost": 15000,
+         "effect": "Increases clicks per second based on level",
+         "rarity": "legendary",
+         "maxLevel": 5,
+         "levels": {
+            "1": "+4 clicks per second",
+            "2": "+6 clicks per second",
+            "3": "+8 clicks per second",
+            "4": "+10 clicks per second",
+            "5": "+12 clicks per second"
+         },
          "level": 0,
          "unlocked": false
       }

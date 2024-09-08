@@ -4,29 +4,34 @@ import { useTranslation } from 'react-i18next';
 import { loadUserData, saveUserData } from '../utils/userData';
 
 const IdleClicker = () => {
-   const { t } = useTranslation();
+   const { t, i18n } = useTranslation();
    const [points, setPoints] = useState(0);
    const [isCoolingDown, setIsCoolingDown] = useState(false);
    const cooldownTimer = useRef(null);
 
    useEffect(() => {
-      // Load data from userData
-      const { gameSave } = loadUserData();
-      console.log('Loaded user data:', gameSave); // Debugging log
-      setPoints(gameSave.points || 0); // Ensure points are set from saved data
-   }, []);
+      // Lade UserData inklusive der gespeicherten Punkte und Sprache
+      const { points: savedPoints, settings } = loadUserData();
+      setPoints(savedPoints || 0); // Setze die Punkte oder 0, wenn keine gespeichert sind
+
+      // Falls eine Sprache gespeichert wurde, wende sie an
+      if (settings?.language) {
+         i18n.changeLanguage(settings.language);
+      }
+   }, [i18n]);
 
    const handleClick = () => {
       if (isCoolingDown) return;
 
-      // Update points
-      setPoints(prevPoints => {
+      setPoints((prevPoints) => {
          const newPoints = prevPoints + 1;
 
-         // Save data to userData when points are updated
-         const data = { gameSave: { points: newPoints } };
+         // Speichere die neuen Punkte und die aktuelle Sprache
+         const data = {
+            points: newPoints, // Keine doppelte userData-Ebene
+            settings: { language: i18n.language }
+         };
          saveUserData(data);
-         console.log('Saved user data:', data); // Debugging log
 
          return newPoints;
       });
@@ -36,13 +41,11 @@ const IdleClicker = () => {
       cooldownTimer.current = setTimeout(() => {
          setIsCoolingDown(false);
       }, 50);
-
-      console.log('Points incremented to:', points + 1); // Debugging log
    };
 
    return (
       <div className="min-h-screen bg-neutral-900 text-neutral-100 flex flex-col items-center justify-center">
-         <h1 className="text-4xl font-bold mb-4">{t('idleClickerTitle')}</h1>
+         <h1 className="text-4xl font-bold mb-4">Idle Clicker 2.0</h1>
          <p className="text-2xl mb-4">{t('points')}: {points}</p>
          <Button
             onClick={handleClick}

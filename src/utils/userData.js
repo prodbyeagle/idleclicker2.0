@@ -1,23 +1,23 @@
 // src/utils/userData.js
 
-const STORAGE_KEY = 'userData'; // Key for localStorage
+const STORAGE_KEY = 'userData';
 
 /**
  * Load user data from localStorage.
- * @returns {object} The user data, including gameSave and settings.
+ * @returns {object} The user data, including userData and settings.
  */
 export const loadUserData = () => {
    const savedData = localStorage.getItem(STORAGE_KEY);
    if (savedData) {
       try {
          const data = JSON.parse(savedData);
-         return data;
+         return data; // Kein doppeltes userData-Schicht hier
       } catch (error) {
          console.error('Failed to parse saved data:', error);
-         return { gameSave: {}, settings: {} };
+         return { upgrades: [], points: 0, settings: {} };
       }
    }
-   return { gameSave: {}, settings: {} };
+   return { upgrades: [], points: 0, settings: {} }; // Standardwerte, wenn nichts gespeichert ist
 };
 
 /**
@@ -26,17 +26,11 @@ export const loadUserData = () => {
  */
 export const saveUserData = (newData) => {
    try {
-      // Load existing data
       const existingData = loadUserData();
-
       const updatedData = {
          ...existingData,
-         gameSave: {
-            ...existingData.gameSave,
-            ...newData.gameSave
-         }
+         ...newData // Nur die neuen Daten speichern, keine doppelte Struktur
       };
-
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
    } catch (error) {
       console.error('Failed to save data:', error);

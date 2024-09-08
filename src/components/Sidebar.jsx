@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Star, Cog } from 'lucide-react'; // Import Lucide icons
+import { Home, Star, Cog, ChevronUp } from 'lucide-react'; // Import Lucide icons
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 import Button from './Button'; // Import the Button component
 
@@ -17,12 +17,21 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
          {/* Navigation Buttons */}
          <div className="flex flex-col space-y-2 flex-grow">
             <Button
+               onClick={() => setActiveTab('home')}
+               className={`flex items-center space-x-3 p-3 rounded-lg ${activeTab === 'home' ? 'bg-neutral-700 text-white border-2 border-blue-500' : 'text-neutral-300'}`}
+               variant={activeTab === 'home' ? 'primary' : 'outline'}
+            >
+               <Home size={24} className={`transition-colors duration-300 ${activeTab === 'upgrades' ? 'text-white' : 'text-neutral-300'}`} />
+               <span className={`text-lg font-medium transition-colors duration-300 ${activeTab === 'upgrades' ? 'text-white' : 'text-neutral-300'}`}>{t('home')}</span>
+            </Button>
+
+            <Button
                onClick={() => setActiveTab('upgrades')}
                className={`flex items-center space-x-3 p-3 rounded-lg ${activeTab === 'upgrades' ? 'bg-neutral-700 text-white border-2 border-blue-500' : 'text-neutral-300'}`}
                variant={activeTab === 'upgrades' ? 'primary' : 'outline'}
             >
-               <Home size={24} className={`transition-colors duration-300 ${activeTab === 'upgrades' ? 'text-white' : 'text-neutral-300'}`} />
-               <span className={`text-lg font-medium transition-colors duration-300 ${activeTab === 'upgrades' ? 'text-white' : 'text-neutral-300'}`}>{t('home')}</span>
+               <ChevronUp size={24} className={`transition-colors duration-300 ${activeTab === 'upgrades' ? 'text-white' : 'text-neutral-300'}`} />
+               <span className={`text-lg font-medium transition-colors duration-300 ${activeTab === 'upgrades' ? 'text-white' : 'text-neutral-300'}`}>{t('upgrades')}</span>
             </Button>
 
             <Button

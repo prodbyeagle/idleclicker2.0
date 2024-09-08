@@ -4,20 +4,21 @@ const STORAGE_KEY = 'userData';
 
 /**
  * Load user data from localStorage.
- * @returns {object} The user data, including userData and settings.
+ * @returns {object} The user data, including upgrades, points, and settings.
  */
 export const loadUserData = () => {
    const savedData = localStorage.getItem(STORAGE_KEY);
    if (savedData) {
       try {
          const data = JSON.parse(savedData);
-         return data; // Kein doppeltes userData-Schicht hier
+         console.debug('Loaded user data:', data); // Debug logging
+         return data;
       } catch (error) {
          console.error('Failed to parse saved data:', error);
          return { upgrades: [], points: 0, settings: {} };
       }
    }
-   return { upgrades: [], points: 0, settings: {} }; // Standardwerte, wenn nichts gespeichert ist
+   return { upgrades: [], points: 0, settings: {} }; // Default values if nothing is saved
 };
 
 /**
@@ -29,8 +30,9 @@ export const saveUserData = (newData) => {
       const existingData = loadUserData();
       const updatedData = {
          ...existingData,
-         ...newData // Nur die neuen Daten speichern, keine doppelte Struktur
+         ...newData // Merge newData with existingData
       };
+      console.debug('Saving user data:', updatedData); // Debug logging
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
    } catch (error) {
       console.error('Failed to save data:', error);

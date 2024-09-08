@@ -34,8 +34,7 @@ const Settings = () => {
    };
 
    const handleResetData = () => {
-      saveUserData({ userData: {}, settings: { language } });
-      debugLog('Data reset. New settings:', { userData: {}, settings: { language } });
+      localStorage.clear();
       setIsResetModalOpen(false);
    };
 

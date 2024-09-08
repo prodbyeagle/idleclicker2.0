@@ -50,7 +50,7 @@ const App = () => {
           />
         )}
         {activeTab === 'upgrades' && (
-          <Upgrades />
+          <Upgrades/>
         )}
         {activeTab === 'settings' && (
           <Settings />

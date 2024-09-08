@@ -7,7 +7,7 @@ const Modal = ({ isOpen, onClose, children }) => {
       if (isOpen) {
          setShow(true);
       } else {
-         const timer = setTimeout(() => setShow(false), 300); // Fade-Out-Dauer
+         const timer = setTimeout(() => setShow(false), 400); // Längere Fade-Out Dauer
          return () => clearTimeout(timer);
       }
    }, [isOpen]);
@@ -16,10 +16,14 @@ const Modal = ({ isOpen, onClose, children }) => {
 
    return (
       <div
-         className={`fixed inset-0 flex justify-center items-center backdrop-blur-xl transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+         className={`fixed inset-0 flex justify-center items-center backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22, 1, 0.36, 1)] ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+         style={{ transitionDelay: isOpen ? '0s' : '0.2s' }} // Verzögerung beim Schließen
+         onClick={onClose} // Klick auf den Hintergrund schließt das Modal
       >
          <div
-            className={`bg-neutral-800/70 text-neutral-200 p-6 rounded-lg transition-opacity transform duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+            className={`bg-neutral-800/70 text-neutral-200 p-6 rounded-lg transition-all transform duration-500 ease-[cubic-bezier(0.22, 1, 0.36, 1)] ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'} `}
+            style={{ backfaceVisibility: 'hidden' }} // Optimierte Animation
+            onClick={(e) => e.stopPropagation()} // Verhindert das Schließen des Modals, wenn im Modal geklickt wird
          >
             {children}
             <button

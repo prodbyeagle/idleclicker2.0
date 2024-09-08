@@ -12,9 +12,8 @@ const IdleClicker = () => {
    useEffect(() => {
       // Lade UserData inklusive der gespeicherten Punkte und Sprache
       const { points: savedPoints, settings } = loadUserData();
-      setPoints(savedPoints || 0); // Setze die Punkte oder 0, wenn keine gespeichert sind
+      setPoints(savedPoints || 0);
 
-      // Falls eine Sprache gespeichert wurde, wende sie an
       if (settings?.language) {
          i18n.changeLanguage(settings.language);
       }

@@ -99,10 +99,6 @@ const Upgrades = () => {
          debugLog(`Upgrade ${upgrade.name}: Cost - ${currentCost}, Level - ${upgrade.level}/${upgrade.maxLevel}`);
 
          if (upgrade.id === id && points >= currentCost && upgrade.level < upgrade.maxLevel) {
-            const newPoints = points - currentCost;
-            debugLog(`Points after purchase: ${newPoints}`);
-
-            setPoints(newPoints);
             purchaseSuccessful = true;
             return {
                ...upgrade,
@@ -125,8 +121,24 @@ const Upgrades = () => {
          return;
       }
 
+      // Update the points based on the upgrade that was purchased
+      const upgradePurchased = upgrades.find(upgrade => upgrade.id === id);
+      const baseCost = upgradePurchased.cost;
+      const costMultiplier = upgradePurchased.costMultiplier || 1;
+      const currentCost = baseCost * Math.pow(costMultiplier, upgradePurchased.level);
+
+      setPoints(prevPoints => {
+         const newPoints = prevPoints - currentCost;
+         debugLog(`Points after purchase in setPoints: ${newPoints}`);
+         return newPoints;
+      });
+
       setUpgrades(updatedUpgrades);
-      saveUserDataToStorage(updatedUpgrades);
+      saveUserDataToStorage({
+         version: currentVersion,
+         upgrades: updatedUpgrades.map(({ id, level }) => ({ id, level })),
+         points: points - currentCost // This should be updated correctly
+      });
 
       setToastMessage(t('purchaseSuccess'));
       setShowToast(true);

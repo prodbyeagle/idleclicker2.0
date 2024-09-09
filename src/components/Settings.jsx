@@ -14,36 +14,38 @@ const Settings = () => {
    const [isExportModalOpen, setIsExportModalOpen] = useState(false);
    const [isImportModalOpen, setIsImportModalOpen] = useState(false);
    const [importPreview, setImportPreview] = useState(null);
-   const [showExtendedPoints, setShowExtendedPoints] = useState(false);
 
    useEffect(() => {
       const { settings } = loadUserData();
       setLanguage(settings?.language || i18n.language);
-      setShowExtendedPoints(settings?.showExtendedPoints || false);
-      debugLog('Loaded user settings:', settings);
    }, [i18n.language]);
 
    useEffect(() => {
       const data = loadUserData();
-      data.settings = { language, showExtendedPoints };
+      data.settings = { language };
       saveUserData(data);
+      debugLog('useEffect (settings update)', 'Updated settings with language and showExtendedPoints:', data.settings);
+   }, [language]);
+
+   useEffect(() => {
       i18n.changeLanguage(language);
-      debugLog('Updated settings and changed language to:', language);
-   }, [language, i18n, showExtendedPoints]);
+      debugLog('useEffect (language change)', 'Updated settings and changed language to:', language);
+   }, [language, i18n]);
 
    const handleLanguageChange = (event) => {
       setLanguage(event.target.value);
-      debugLog('Language changed to:', event.target.value);
+      debugLog('handleLanguageChange', 'Language changed to:', event.target.value);
    };
 
    const handleResetData = () => {
       localStorage.clear();
       setIsResetModalOpen(false);
+      debugLog('handleResetData', 'Local storage cleared.');
    };
 
    const handleExportData = () => {
       const data = JSON.stringify(loadUserData());
-      debugLog(data);
+      debugLog('handleExportData', 'Exported data:', data);
       const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -51,7 +53,7 @@ const Settings = () => {
       a.download = 'userData.json';
       a.click();
       URL.revokeObjectURL(url);
-      debugLog('Data exported to userData.json');
+      debugLog('handleExportData', 'Data exported to userData.json');
       setIsExportModalOpen(false);
    };
 
@@ -68,10 +70,10 @@ const Settings = () => {
                };
                setImportPreview(preview);
                setIsImportModalOpen(true);
-               debugLog('Import preview:', preview);
+               debugLog('handleImportData', 'Import preview:', preview);
             } catch (error) {
                console.error(t('dataImportError'));
-               debugLog('Error importing data:', error);
+               debugLog('handleImportData', 'Error importing data:', error);
             }
          };
          reader.readAsText(file);
@@ -86,11 +88,11 @@ const Settings = () => {
             try {
                const data = JSON.parse(e.target.result);
                saveUserData(data);
-               debugLog('Imported data:', data);
+               debugLog('handleAcceptImport', 'Imported data:', data);
                setIsImportModalOpen(false);
             } catch (error) {
                console.error(t('dataImportError'));
-               debugLog('Error accepting import data:', error);
+               debugLog('handleAcceptImport', 'Error accepting import data:', error);
             }
          };
          reader.readAsText(file);
@@ -101,33 +103,24 @@ const Settings = () => {
       const userData = loadUserData();
       userData.points = (userData.points || 0) + 500000;
       saveUserData(userData);
-      debugLog('Added 500k points. New points total:', userData.points);
    };
 
    const add1mPoints = () => {
       const userData = loadUserData();
       userData.points = (userData.points || 0) + 1000000;
       saveUserData(userData);
-      debugLog('Added 1m points. New points total:', userData.points);
    };
 
    const add10mPoints = () => {
       const userData = loadUserData();
       userData.points = (userData.points || 0) + 10000000;
       saveUserData(userData);
-      debugLog('Added 10m points. New points total:', userData.points);
    };
 
    const add100mPoints = () => {
       const userData = loadUserData();
       userData.points = (userData.points || 0) + 100000000;
       saveUserData(userData);
-      debugLog('Added 100m points. New points total:', userData.points);
-   };
-
-   const handleCheckboxChange = (event) => {
-      setShowExtendedPoints(event.target.checked);
-      debugLog('Show extended points changed to:', event.target.checked);
    };
 
    return (
@@ -208,11 +201,15 @@ const Settings = () => {
             </div>
          </div>
 
-         <div className="bg-neutral-800 p-4 rounded-lg shadow-md">
+         <div className="flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg">
             <Checkbox
-               checked={showExtendedPoints}
-               onChange={handleCheckboxChange}
                label={t('showExtendedPoints')}
+               disabled={true}
+            />
+
+            <Checkbox
+               label={t('debugMode')}
+               disabled={true}
             />
          </div>
 
@@ -230,37 +227,33 @@ const Settings = () => {
          </Modal>
 
          <Modal isOpen={isExportModalOpen} onClose={() => setIsExportModalOpen(false)}>
-            <h2 className="text-3xl font-semibold mb-6">{t('exportData')}</h2>
-            <div className="flex flex-wrap gap-2">
-               <Button
-                  onClick={handleExportData}
-                  className="text-white mt-4 px-4 py-2 sm:w-auto"
-                  variant="primary"
-               >
-                  {t('exportData')}
-               </Button>
-            </div>
+            <h2 className="text-3xl font-semibold mb-6">{t('dataExport')}</h2>
+            <Button
+               onClick={handleExportData}
+               className="text-white mt-4 px-4 py-2 sm:w-auto"
+               variant="primary"
+            >
+               {t('exportData')}
+            </Button>
          </Modal>
 
          <Modal isOpen={isImportModalOpen} onClose={() => setIsImportModalOpen(false)}>
-            <h2 className="text-3xl font-semibold mb-6">{t('confirmImport')}</h2>
-            <div className="mb-4">
-               <p>{t('importPreview')}</p>
-               {importPreview && (
-                  <pre className="bg-neutral-900 p-4 rounded-lg overflow-x-auto">
-                     {`Points: ${importPreview.points}\nLanguage: ${importPreview.language}`}
-                  </pre>
-               )}
-            </div>
-            <div className="flex flex-wrap gap-2">
-               <Button
-                  onClick={handleAcceptImport}
-                  className="text-white mt-4 px-4 py-2 sm:w-auto"
-                  variant="primary"
-               >
-                  {t('importData')}
-               </Button>
-            </div>
+            <h2 className="text-3xl font-semibold mb-6">{t('importPreview')}</h2>
+            {importPreview ? (
+               <div className="text-lg mb-4">
+                  <p>{t('points')}: {importPreview.points}</p>
+                  <p>{t('language')}: {importPreview.language}</p>
+                  <Button
+                     onClick={handleAcceptImport}
+                     className="text-white mt-4 px-4 py-2 sm:w-auto"
+                     variant="primary"
+                  >
+                     {t('importData')}
+                  </Button>
+               </div>
+            ) : (
+               <p>{t('dataImportError')}</p>
+            )}
          </Modal>
       </div>
    );

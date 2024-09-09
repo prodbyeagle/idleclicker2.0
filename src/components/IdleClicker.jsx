@@ -10,12 +10,14 @@ const IdleClicker = () => {
    const [points, setPoints] = useState(0);
    const [isCoolingDown, setIsCoolingDown] = useState(false);
    const [userUpgrades, setUserUpgrades] = useState([]);
+   const [showExtendedPoints, setShowExtendedPoints] = useState(false);  // Add state for extended points
    const cooldownTimer = useRef(null);
 
    useEffect(() => {
       const { points: savedPoints, settings, upgrades } = loadUserData();
       setPoints(savedPoints || 0);
       setUserUpgrades(upgrades || []);
+      setShowExtendedPoints(settings?.showExtendedPoints || false);  // Set extended points setting
 
       if (settings?.language) {
          i18n.changeLanguage(settings.language);
@@ -65,7 +67,7 @@ const IdleClicker = () => {
          const newPoints = prevPoints + pointsEarned;
          const data = {
             points: newPoints,
-            settings: { language: i18n.language },
+            settings: { language: i18n.language, showExtendedPoints },
             upgrades: userUpgrades
          };
          saveUserData(data);
@@ -77,14 +79,16 @@ const IdleClicker = () => {
 
       cooldownTimer.current = setTimeout(() => {
          setIsCoolingDown(false);
-      }, 50);
+      }, 75);
    };
 
    return (
       <div className="min-h-screen bg-neutral-900 text-neutral-100 flex flex-col items-center justify-center">
          <h1 className="text-4xl font-bold mb-4">Idle Clicker 2.0</h1>
          <p className="text-2xl mb-4">{t('points')}: {formatNumber(points)}</p>
-         <p className="text-xl mb-4">{points}</p>
+         {showExtendedPoints && (
+            <p className="text-xl mb-4">{points}</p>
+         )}
          <Button
             onClick={handleClick}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg active:scale-95"

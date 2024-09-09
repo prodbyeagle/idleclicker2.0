@@ -12,18 +12,6 @@
    "language": "Sprache",
    "generalSettings": "Allgemeine Einstellungen",
    "customizeExperience": "Passen Sie Ihr Spielerlebnis hier an.",
-   "achievement_1_name": "Erster Klick",
-   "achievement_1_description": "Erreiche 10 Klicks",
-   "achievement_2_name": "Klick-Meister",
-   "achievement_2_description": "Erreiche 100 Klicks",
-   "achievement_3_name": "Klick-Legende",
-   "achievement_3_description": "Erreiche 1000 Klicks",
-   "achievement_4_name": "Upgrades Guru",
-   "achievement_4_description": "Kaufe 5 Upgrades",
-   "achievement_5_name": "Mega-Klicker",
-   "achievement_5_description": "Erreiche 1.000.000 Punkte",
-   "achievement_6_name": "Schneller Fortschritt",
-   "achievement_6_description": "Erreiche Level 10 in einem Upgrade",
    "idleClicker": "Idle Clicker",
    "points": "Punkte",
    "clickButton": "Klicken!",
@@ -44,5 +32,7 @@
    "buyUpgrade": "Upgrade kaufen",
    "maxLevelReached": "✅ Maximalstufe erreicht",
    "maxedUpgrade": "✅ Maxed Upgrade",
-   "comingSoon": "Dieses Features kommt bald.."
+   "comingSoon": "Dieses Feature kommt bald..",
+   "debugMode": "Entwickler Modus",
+   "showExtendedPoints": "Zeige Erweiterte Punkte"
 }

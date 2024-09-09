@@ -2,7 +2,9 @@ import React from 'react';
 
 const Checkbox = ({ checked, onChange, label, disabled }) => {
    return (
-      <label className={`flex items-center cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : 'text-neutral-100'}`}>
+      <label
+         className={`flex items-center cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : 'text-neutral-100'}`}
+      >
          <input
             type="checkbox"
             checked={checked}
@@ -11,8 +13,7 @@ const Checkbox = ({ checked, onChange, label, disabled }) => {
             disabled={disabled}
          />
          <span
-            className={`flex items-center justify-center w-6 h-6 border rounded mr-3 transition-colors duration-200 ${disabled ? 'bg-neutral-700 border-neutral-500' : (checked ? 'bg-green-500 border-green-500' : 'bg-neutral-800 border-neutral-600')
-               }`}
+            className={`flex items-center justify-center w-6 h-6 border rounded mr-3 transition-colors duration-200 ${disabled ? 'bg-neutral-700 border-neutral-500 cursor-default' : (checked ? 'bg-green-500 border-green-500' : 'bg-neutral-800 border-neutral-600')}`}
          >
             {checked && !disabled && (
                <svg

@@ -1,5 +1,4 @@
 // src/utils/userData.js
-
 const STORAGE_KEY = 'userData';
 
 /**
@@ -11,14 +10,19 @@ export const loadUserData = () => {
    if (savedData) {
       try {
          const data = JSON.parse(savedData);
-         console.debug('Loaded user data:', data); // Debug logging
-         return data;
+         return {
+            ...data,
+            settings: {
+               ...data.settings,
+               showExtendedPoints: data.settings.showExtendedPoints ?? false,
+            },
+         };
       } catch (error) {
          console.error('Failed to parse saved data:', error);
-         return { upgrades: [], points: 0, settings: {} };
+         return { upgrades: [], points: 0, settings: { language: 'en', showExtendedPoints: false } };
       }
    }
-   return { upgrades: [], points: 0, settings: {} }; // Default values if nothing is saved
+   return { upgrades: [], points: 0, settings: { language: 'en', showExtendedPoints: false } };
 };
 
 /**
@@ -28,11 +32,19 @@ export const loadUserData = () => {
 export const saveUserData = (newData) => {
    try {
       const existingData = loadUserData();
+
+      // Merge new settings with existing settings if available
+      const updatedSettings = {
+         ...existingData.settings,
+         ...newData.settings,
+      };
+
       const updatedData = {
          ...existingData,
-         ...newData // Merge newData with existingData
+         ...newData,
+         settings: updatedSettings, // Ensure settings are merged properly
       };
-      console.debug('Saving user data:', updatedData); // Debug logging
+
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
    } catch (error) {
       console.error('Failed to save data:', error);

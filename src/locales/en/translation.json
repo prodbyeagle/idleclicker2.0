@@ -12,18 +12,6 @@
    "language": "Language",
    "generalSettings": "General Settings",
    "customizeExperience": "Customize your game experience here.",
-   "achievement_1_name": "First Click",
-   "achievement_1_description": "Reach 10 clicks",
-   "achievement_2_name": "Click Master",
-   "achievement_2_description": "Reach 100 clicks",
-   "achievement_3_name": "Click Legend",
-   "achievement_3_description": "Reach 1000 clicks",
-   "achievement_4_name": "Upgrades Guru",
-   "achievement_4_description": "Buy 5 upgrades",
-   "achievement_5_name": "Mega Clicker",
-   "achievement_5_description": "Reach 1,000,000 points",
-   "achievement_6_name": "Fast Progress",
-   "achievement_6_description": "Reach level 10 in an upgrade",
    "idleClicker": "Idle Clicker",
    "points": "Points",
    "clickButton": "Click!",
@@ -44,5 +32,7 @@
    "buyUpgrade": "Buy Upgrade",
    "maxLevelReached": "✅ Max Level Reached",
    "maxedUpgrade": "✅ Maxed Upgrade",
-   "comingSoon": "This Feature is Coming Soon.."
+   "comingSoon": "This Feature is Coming Soon..",
+   "debugMode": "Debug Mode",
+   "showExtendedPoints": "Show Extended Points"
 }

@@ -4,7 +4,7 @@
 
 /* Beispiel für globale Dunkelmodus-Stile */
 body {
-   @apply bg-neutral-900 text-neutral-100;
+   @apply bg-neutral-900 text-neutral-100 select-none;
 }
 
 button {

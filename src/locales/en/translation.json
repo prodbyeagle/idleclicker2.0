@@ -43,5 +43,6 @@
    "upgradeCost": "Cost",
    "buyUpgrade": "Buy Upgrade",
    "maxLevelReached": "✅ Max Level Reached",
-   "maxedUpgrade": "✅ Maxed Upgrade"
+   "maxedUpgrade": "✅ Maxed Upgrade",
+   "comingSoon": "This Feature is Coming Soon.."
 }

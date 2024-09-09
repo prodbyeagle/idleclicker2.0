@@ -23,6 +23,7 @@ const Upgrades = () => {
    const [toastMessage, setToastMessage] = useState('');
    const [borderClass, setBorderClass] = useState('');
    const [points, setPoints] = useState(0);
+   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 768);
 
    useEffect(() => {
       const savedData = loadUserData();
@@ -38,11 +39,21 @@ const Upgrades = () => {
          };
       });
 
-
       fullUpgrades.sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
 
       debugLog('Merged and sorted upgrades:', fullUpgrades);
       setUpgrades(fullUpgrades);
+   }, []);
+
+   useEffect(() => {
+      const handleResize = () => {
+         setIsCollapsed(window.innerWidth < 768);
+      };
+
+      window.addEventListener('resize', handleResize);
+      handleResize();
+
+      return () => window.removeEventListener('resize', handleResize);
    }, []);
 
    const saveUserDataToStorage = (updatedUpgrades) => {
@@ -88,10 +99,8 @@ const Upgrades = () => {
          debugLog(`Upgrade ${upgrade.name}: Cost - ${currentCost}, Level - ${upgrade.level}/${upgrade.maxLevel}`);
 
          if (upgrade.id === id && points >= currentCost && upgrade.level < upgrade.maxLevel) {
-
             const newPoints = points - currentCost;
             debugLog(`Points after purchase: ${newPoints}`);
-
 
             setPoints(newPoints);
             purchaseSuccessful = true;
@@ -125,10 +134,10 @@ const Upgrades = () => {
    };
 
    return (
-      <div className={`space-y-4 ${borderClass}`}>
+      <div className={`space-y-4 ${borderClass} ${isCollapsed ? 'ml-6' : ''}`}>
          <h2 className="text-3xl font-semibold mb-6">{t('availableUpgrades')}</h2>
 
-         <div className="grid grid-cols-1 gap-4">
+         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4">
             {upgrades.map((upgrade) => {
                const baseCost = upgrade.cost;
                const costMultiplier = upgrade.costMultiplier || 1;
@@ -140,7 +149,6 @@ const Upgrades = () => {
                      className={`p-4 rounded-lg shadow-md bg-neutral-800 ${upgrade.level >= upgrade.maxLevel ? 'relative' : ''}`}
                      style={{
                         borderLeft: `4px solid ${getRarityColor(upgrade.rarity)}`,
-
                      }}
                   >
                      {upgrade.level >= upgrade.maxLevel && (
@@ -167,7 +175,6 @@ const Upgrades = () => {
                      >
                         {upgrade.level >= upgrade.maxLevel ? t('maxLevelReached') : t('buyUpgrade')}
                      </Button>
-
                   </div>
                );
             })}

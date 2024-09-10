@@ -10,6 +10,9 @@ module.exports = {
       fontFamily: {
         sans: ['Space Grotesk', 'sans-serif'],
       },
+      borderWidth: {
+        '96': '96px', // Füge hier den neuen Wert hinzu
+      },
     },
   },
   plugins: [],

@@ -4,20 +4,26 @@ import { loadUserData, saveUserData } from '../utils/userData';
 import formatNumber from '../utils/formatNumber';
 import Modal from './Modal';
 import Button from './Button';
-import Checkbox from './Checkbox';  // Importiere CustomCheckbox
+import Checkbox from './Checkbox';
+import Tooltip from './Tooltip';
 import { debugLog } from '../utils/debug';
+import classNames from 'classnames';
 
 const Settings = () => {
    const { t, i18n } = useTranslation();
    const [language, setLanguage] = useState(i18n.language);
    const [isResetModalOpen, setIsResetModalOpen] = useState(false);
-   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
    const [isImportModalOpen, setIsImportModalOpen] = useState(false);
    const [importPreview, setImportPreview] = useState(null);
+   const [showExtendedPoints, setShowExtendedPoints] = useState(false);
+   const [exportSuccess, setExportSuccess] = useState(false);
+   const [debugMode, setDebugMode] = useState(false);
 
    useEffect(() => {
       const { settings } = loadUserData();
       setLanguage(settings?.language || i18n.language);
+      setShowExtendedPoints(settings?.showExtendedPoints || false);
+      setDebugMode(settings?.debug || false);
    }, [i18n.language]);
 
    useEffect(() => {
@@ -43,6 +49,28 @@ const Settings = () => {
       debugLog('handleResetData', 'Local storage cleared.');
    };
 
+   const handleExtendedStatsChange = (event) => {
+      setShowExtendedPoints(event.target.checked);
+      const data = loadUserData();
+      data.settings = {
+         ...data.settings,
+         showExtendedPoints: event.target.checked
+      };
+      saveUserData(data);
+      debugLog('handleExtendedStatsChange', 'Updated showExtendedPoints:', event.target.checked);
+   };
+
+   const handleDebugModeChange = (event) => {
+      setDebugMode(event.target.checked);
+      const data = loadUserData();
+      data.settings = {
+         ...data.settings,
+         debug: event.target.checked
+      };
+      saveUserData(data);
+      debugLog('handleDebugModeChange', 'Updated debugMode:', event.target.checked);
+   };
+
    const handleExportData = () => {
       const data = JSON.stringify(loadUserData());
       debugLog('handleExportData', 'Exported data:', data);
@@ -54,7 +82,9 @@ const Settings = () => {
       a.click();
       URL.revokeObjectURL(url);
       debugLog('handleExportData', 'Data exported to userData.json');
-      setIsExportModalOpen(false);
+
+      setExportSuccess(true);
+      setTimeout(() => setExportSuccess(false), 3000);
    };
 
    const handleImportData = (event) => {
@@ -99,30 +129,6 @@ const Settings = () => {
       }
    };
 
-   const add500kPoints = () => {
-      const userData = loadUserData();
-      userData.points = (userData.points || 0) + 500000;
-      saveUserData(userData);
-   };
-
-   const add1mPoints = () => {
-      const userData = loadUserData();
-      userData.points = (userData.points || 0) + 1000000;
-      saveUserData(userData);
-   };
-
-   const add10mPoints = () => {
-      const userData = loadUserData();
-      userData.points = (userData.points || 0) + 10000000;
-      saveUserData(userData);
-   };
-
-   const add100mPoints = () => {
-      const userData = loadUserData();
-      userData.points = (userData.points || 0) + 100000000;
-      saveUserData(userData);
-   };
-
    return (
       <div className="space-y-4 px-4 sm:px-6 lg:px-8">
          <h2 className="text-3xl font-semibold mb-6">{t('settings')}</h2>
@@ -153,7 +159,7 @@ const Settings = () => {
                </Button>
 
                <Button
-                  onClick={() => setIsExportModalOpen(true)}
+                  onClick={handleExportData}
                   className="text-white w-full sm:w-auto"
                   variant="primary"
                >
@@ -169,47 +175,30 @@ const Settings = () => {
                      className="hidden"
                   />
                </label>
-
-               <Button
-                  onClick={add500kPoints}
-                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white w-full sm:w-auto"
-                  variant="primary"
-               >
-                  Add 500k Points
-               </Button>
-               <Button
-                  onClick={add1mPoints}
-                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white w-full sm:w-auto"
-                  variant="primary"
-               >
-                  Add 1m Points
-               </Button>
-               <Button
-                  onClick={add10mPoints}
-                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white w-full sm:w-auto"
-                  variant="primary"
-               >
-                  Add 10m Points
-               </Button>
-               <Button
-                  onClick={add100mPoints}
-                  className="bg-green-600 hover:bg-green-700 duration-200 transition-all text-white w-full sm:w-auto"
-                  variant="primary"
-               >
-                  Add 100m Points
-               </Button>
             </div>
          </div>
 
          <div className="flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg">
             <Checkbox
-               label={t('showExtendedPoints')}
-               disabled={true}
+               label={
+                  <Tooltip content={t('tooltipShowExtendedPoints')} position="top">
+                     {t('showExtendedPoints')}
+                  </Tooltip>
+               }
+               checked={showExtendedPoints}
+               onChange={handleExtendedStatsChange}
             />
+         </div>
 
+         <div className="flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg">
             <Checkbox
-               label={t('debugMode')}
-               disabled={true}
+               label={
+                  <Tooltip content={t('tooltipDebugMode')} position="top">
+                     {t('debugMode')}
+                  </Tooltip>
+               }
+               checked={debugMode}
+               onChange={handleDebugModeChange}
             />
          </div>
 
@@ -226,23 +215,14 @@ const Settings = () => {
             </div>
          </Modal>
 
-         <Modal isOpen={isExportModalOpen} onClose={() => setIsExportModalOpen(false)}>
-            <h2 className="text-3xl font-semibold mb-6">{t('dataExport')}</h2>
-            <Button
-               onClick={handleExportData}
-               className="text-white mt-4 px-4 py-2 sm:w-auto"
-               variant="primary"
-            >
-               {t('exportData')}
-            </Button>
-         </Modal>
-
          <Modal isOpen={isImportModalOpen} onClose={() => setIsImportModalOpen(false)}>
             <h2 className="text-3xl font-semibold mb-6">{t('importPreview')}</h2>
             {importPreview ? (
                <div className="text-lg mb-4">
                   <p>{t('points')}: {importPreview.points}</p>
                   <p>{t('language')}: {importPreview.language}</p>
+                  <p>{t('showExtendedPoints')}: {importPreview.showExtendedPoints ? t('yes') : t('no')}</p>
+                  <p>{t('debugMode')}: {importPreview.debug ? t('yes') : t('no')}</p>
                   <Button
                      onClick={handleAcceptImport}
                      className="text-white mt-4 px-4 py-2 sm:w-auto"
@@ -255,6 +235,15 @@ const Settings = () => {
                <p>{t('dataImportError')}</p>
             )}
          </Modal>
+
+         <div
+            className={classNames(
+               'bg-neutral-800 border border-green-600 text-white px-4 py-2 rounded-lg text-md text-center mb-4 transition-opacity duration-300',
+               { 'opacity-100': exportSuccess, 'opacity-0': !exportSuccess }
+            )}
+         >
+            {t('exportSuccess')}
+         </div>
       </div>
    );
 };

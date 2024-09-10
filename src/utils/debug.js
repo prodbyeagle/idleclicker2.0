@@ -1,6 +1,7 @@
-import debugData from '../game-config.json';
+import { loadUserData } from "./userData";
 
-let debug = debugData.debug || false;
+let userData = loadUserData();
+let debug = userData?.settings?.debug === true;
 
 /**
  * Logs debug messages to the console if debug mode is enabled.

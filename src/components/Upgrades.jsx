@@ -134,11 +134,7 @@ const Upgrades = () => {
       });
 
       setUpgrades(updatedUpgrades);
-      saveUserDataToStorage({
-         version: currentVersion,
-         upgrades: updatedUpgrades.map(({ id, level }) => ({ id, level })),
-         points: points - currentCost // This should be updated correctly
-      });
+      saveUserDataToStorage(updatedUpgrades);
 
       setToastMessage(t('purchaseSuccess'));
       setShowToast(true);

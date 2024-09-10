@@ -34,5 +34,9 @@
    "maxedUpgrade": "✅ Maxed Upgrade",
    "comingSoon": "This Feature is Coming Soon..",
    "debugMode": "Debug Mode",
-   "showExtendedPoints": "Show Extended Points"
+   "showExtendedPoints": "Show Extended Points",
+   "tooltipShowExtendedPoints": "Displays extended points information (500k -> 500000)",
+   "tooltipDebugMode": "Enables debug mode for additional information (Doesn't work for you)",
+   "exportSuccess": "Data has been successfully exported.",
+   "close": "Close"
 }

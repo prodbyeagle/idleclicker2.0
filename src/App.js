@@ -40,7 +40,7 @@ const App = () => {
             setUpgradesCount={setUpgradesCount}
           />
         )}
-        {activeTab === 'upgrades' && (
+        {activeTab === 'upgrades' && !isUpgradeModalOpen && (
           <Upgrades />
         )}
         {activeTab === 'settings' && (

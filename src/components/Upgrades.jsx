@@ -56,7 +56,7 @@ const Upgrades = () => {
       return () => window.removeEventListener('resize', handleResize);
    }, []);
 
-   const saveUserDataToStorage = (updatedUpgrades) => {
+   const saveUserDataToStorage = (updatedUpgrades, updatedPoints) => {
       const simplifiedUpgrades = updatedUpgrades.map(({ id, level }) => ({
          id,
          level
@@ -65,7 +65,7 @@ const Upgrades = () => {
       const updatedData = {
          version: currentVersion,
          upgrades: simplifiedUpgrades,
-         points: points
+         points: updatedPoints // Speichere die neuen Punkte
       };
       debugLog('Saving user data:', updatedData);
       saveUserData(updatedData);
@@ -121,20 +121,20 @@ const Upgrades = () => {
          return;
       }
 
-      // Update the points based on the upgrade that was purchased
+      // Finde das Upgrade, das gekauft wurde
       const upgradePurchased = upgrades.find(upgrade => upgrade.id === id);
       const baseCost = upgradePurchased.cost;
       const costMultiplier = upgradePurchased.costMultiplier || 1;
       const currentCost = baseCost * Math.pow(costMultiplier, upgradePurchased.level);
 
-      setPoints(prevPoints => {
-         const newPoints = prevPoints - currentCost;
-         debugLog(`Points after purchase in setPoints: ${newPoints}`);
-         return newPoints;
-      });
+      // Aktualisiere die Punkte und speichere sie
+      const newPoints = points - currentCost;
+      setPoints(newPoints);
+      debugLog(`Points after purchase: ${newPoints}`);
 
+      // Speichere die aktualisierten Upgrades und Punkte
       setUpgrades(updatedUpgrades);
-      saveUserDataToStorage(updatedUpgrades);
+      saveUserDataToStorage(updatedUpgrades, newPoints); // Übergib auch die neuen Punkte
 
       setToastMessage(t('purchaseSuccess'));
       setShowToast(true);

@@ -40,5 +40,6 @@
    "exportSuccess": "Die Daten wurden erfolgreich exportiert.",
    "close": "Schließen",
    "upgradeLocked": "Dieses Upgrade ist gesperrt.",
-   "activeUpgrades": "Aktive Upgrades!"
+   "activeUpgrades": "Aktive Upgrades!",
+   "purchaseSuccess": "Erfolgreich Gekauft"
 }

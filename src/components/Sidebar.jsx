@@ -3,18 +3,29 @@ import { Home, Gift, Cog, CircleArrowUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Button from './Button';
 
+/**
+ * Sidebar component provides navigation links and options in the application.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.activeTab - The currently active tab.
+ * @param {Function} props.setActiveTab - Function to set the active tab.
+ *
+ * @component
+ */
 const Sidebar = ({ activeTab, setActiveTab }) => {
    const { t } = useTranslation();
    const [isCollapsed, setIsCollapsed] = useState(false);
 
-   // Detect screen size and toggle collapse for mobile
    useEffect(() => {
+      /**
+       * Handles window resize to collapse or expand the sidebar based on width.
+       */
       const handleResize = () => {
          setIsCollapsed(window.innerWidth < 768);
       };
 
       window.addEventListener('resize', handleResize);
-      handleResize(); // Trigger on mount
+      handleResize();
 
       return () => window.removeEventListener('resize', handleResize);
    }, []);
@@ -25,7 +36,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
       >
          {/* Sidebar Header */}
          <div
-            className={`mb-6 flex items-center ${isCollapsed ? 'justify-center' : 'space-x-8'} transition-all duration-300 ease-in-out`}
+            className={`mb-4 flex items-center ${isCollapsed ? 'justify-center' : 'space-x-8'} transition-all rounded hover:bg-neutral-900 duration-300 ease-in-out`}
          >
             <Home size={32} className="text-neutral-400 hover:bg-neutral-900 transition-all duration-200 rounded p-1" />
             {!isCollapsed && <span className="text-neutral-100 text-2xl font-semibold">Menu</span>}

@@ -1,7 +1,13 @@
-// src/components/Tooltip.js
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * @param {Object} props - The properties object.
+ * @param {string} props.content - The text content to display in the tooltip.
+ * @param {React.ReactNode} props.children - The element(s) that the tooltip is attached to.
+ * @param {'top' | 'bottom' | 'left' | 'right'} [props.position='bottom'] - The position of the tooltip relative to the target element.
+ * @param {number} [props.delay=300] - The delay in milliseconds before the tooltip appears.
+ */
 const Tooltip = ({ content, children, position = 'bottom', delay = 300 }) => {
    const [isVisible, setIsVisible] = useState(false);
    const [timeoutId, setTimeoutId] = useState(null);
@@ -37,6 +43,7 @@ const Tooltip = ({ content, children, position = 'bottom', delay = 300 }) => {
                      ? 'right-full mr-2 top-1/2 transform -translate-y-1/2'
                      : 'left-full ml-2 top-1/2 transform -translate-y-1/2'
                }`}
+            style={{ pointerEvents: 'none' }}
          >
             {content}
          </div>

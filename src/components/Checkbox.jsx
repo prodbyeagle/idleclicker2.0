@@ -1,5 +1,14 @@
 import React from 'react';
 
+/**
+ * Checkbox component that can be used to toggle a boolean state with an optional label.
+ *
+ * @param {Object} props - The properties object.
+ * @param {boolean} props.checked - Indicates whether the checkbox is checked.
+ * @param {function} [props.onChange] - Callback function to handle changes when the checkbox is toggled. Ignored if `disabled` is true.
+ * @param {string} [props.label] - The label text to display next to the checkbox.
+ * @param {boolean} [props.disabled=false] - Whether the checkbox is disabled.
+ */
 const Checkbox = ({ checked, onChange, label, disabled }) => {
    return (
       <label

@@ -9,6 +9,12 @@ import Tooltip from './Tooltip';
 import { debugLog } from '../utils/debug';
 import classNames from 'classnames';
 
+/**
+ * Settings component allows users to configure application settings, such as language,
+ * data import/export, and various application preferences.
+ *
+ * @component
+ */
 const Settings = () => {
    const { t, i18n } = useTranslation();
    const [language, setLanguage] = useState(i18n.language);
@@ -38,17 +44,32 @@ const Settings = () => {
       debugLog('useEffect (language change)', 'Updated settings and changed language to:', language);
    }, [language, i18n]);
 
+   /**
+    * Handles language change.
+    *
+    * @param {Object} event - The change event from the select element.
+    */
    const handleLanguageChange = (event) => {
       setLanguage(event.target.value);
       debugLog('handleLanguageChange', 'Language changed to:', event.target.value);
    };
 
+   /**
+    * Resets application data and settings to default.
+    */
    const handleResetData = () => {
+      setShowExtendedPoints(false);
+      setDebugMode(false);
       localStorage.clear();
       setIsResetModalOpen(false);
-      debugLog('handleResetData', 'Local storage cleared.');
+      debugLog('handleResetData', 'Local storage cleared and app state reset.');
    };
 
+   /**
+    * Handles changes to the extended points setting.
+    *
+    * @param {Object} event - The change event from the checkbox element.
+    */
    const handleExtendedStatsChange = (event) => {
       setShowExtendedPoints(event.target.checked);
       const data = loadUserData();
@@ -60,6 +81,11 @@ const Settings = () => {
       debugLog('handleExtendedStatsChange', 'Updated showExtendedPoints:', event.target.checked);
    };
 
+   /**
+    * Handles changes to the debug mode setting.
+    *
+    * @param {Object} event - The change event from the checkbox element.
+    */
    const handleDebugModeChange = (event) => {
       setDebugMode(event.target.checked);
       const data = loadUserData();
@@ -71,6 +97,9 @@ const Settings = () => {
       debugLog('handleDebugModeChange', 'Updated debugMode:', event.target.checked);
    };
 
+   /**
+    * Exports user data as a JSON file.
+    */
    const handleExportData = () => {
       const data = JSON.stringify(loadUserData());
       debugLog('handleExportData', 'Exported data:', data);
@@ -87,6 +116,11 @@ const Settings = () => {
       setTimeout(() => setExportSuccess(false), 3000);
    };
 
+   /**
+    * Handles the import of user data from a JSON file.
+    *
+    * @param {Object} event - The change event from the file input element.
+    */
    const handleImportData = (event) => {
       const file = event.target.files[0];
       if (file) {
@@ -110,6 +144,9 @@ const Settings = () => {
       }
    };
 
+   /**
+    * Accepts imported user data and saves it.
+    */
    const handleAcceptImport = () => {
       const file = document.querySelector('input[type="file"]').files[0];
       if (file) {

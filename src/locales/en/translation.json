@@ -38,5 +38,7 @@
    "tooltipShowExtendedPoints": "Displays extended points information (500k -> 500000)",
    "tooltipDebugMode": "Enables debug mode for additional information (Doesn't work for you)",
    "exportSuccess": "Data has been successfully exported.",
-   "close": "Close"
+   "close": "Close",
+   "upgradeLocked": "This Upgrade is Locked.",
+   "activeUpgrades": "Active Upgrades!"
 }

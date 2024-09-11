@@ -6,6 +6,7 @@ import { loadUserData, saveUserData } from '../utils/userData';
 import formatNumber from '../utils/formatNumber';
 import { debugLog } from '../utils/debug';
 import Toast from './Toast';
+import Tooltip from './Tooltip'; // Tooltip importieren
 
 const currentVersion = '1.2';
 
@@ -98,7 +99,8 @@ const Upgrades = () => {
 
          debugLog(`Upgrade ${upgrade.name}: Cost - ${currentCost}, Level - ${upgrade.level}/${upgrade.maxLevel}`);
 
-         if (upgrade.id === id && points >= currentCost && upgrade.level < upgrade.maxLevel) {
+         // Check if the upgrade is locked or at max level
+         if (upgrade.id === id && points >= currentCost && upgrade.level < upgrade.maxLevel && !upgrade.lock) {
             purchaseSuccessful = true;
             return {
                ...upgrade,
@@ -117,24 +119,21 @@ const Upgrades = () => {
             setBorderClass('');
             setShowToast(false);
          }, 3000);
-         debugLog('Purchase failed. Either not enough points or max level reached.');
+         debugLog('Purchase failed. Either not enough points, upgrade is locked, or max level reached.');
          return;
       }
 
-      // Finde das Upgrade, das gekauft wurde
       const upgradePurchased = upgrades.find(upgrade => upgrade.id === id);
       const baseCost = upgradePurchased.cost;
       const costMultiplier = upgradePurchased.costMultiplier || 1;
       const currentCost = baseCost * Math.pow(costMultiplier, upgradePurchased.level);
 
-      // Aktualisiere die Punkte und speichere sie
       const newPoints = points - currentCost;
       setPoints(newPoints);
       debugLog(`Points after purchase: ${newPoints}`);
 
-      // Speichere die aktualisierten Upgrades und Punkte
       setUpgrades(updatedUpgrades);
-      saveUserDataToStorage(updatedUpgrades, newPoints); // Übergib auch die neuen Punkte
+      saveUserDataToStorage(updatedUpgrades, newPoints);
 
       setToastMessage(t('purchaseSuccess'));
       setShowToast(true);
@@ -170,19 +169,41 @@ const Upgrades = () => {
                      <p>{t('description')}: {upgrade.level >= upgrade.maxLevel ? upgrade.levels[upgrade.maxLevel] : (upgrade.levels ? upgrade.levels[upgrade.level + 1] : upgrade.effect)}</p>
                      <p>{t('upgradeCost')}: 🪙 {formatNumber(currentCost)}</p>
 
-                     <Button
-                        onClick={() => handlePurchase(upgrade.id)}
-                        disabled={points < currentCost || upgrade.level >= upgrade.maxLevel}
-                        className={`mt-2 text-white
-                              ${upgrade.level >= upgrade.maxLevel
-                              ? 'bg-green-900/50 hover:bg-green-900/50 cursor-not-allowed'
-                              : points < currentCost
-                                 ? 'bg-neutral-600 hover:bg-neutral-600 cursor-not-allowed'
-                                 : 'bg-primary hover:bg-primary-dark'}`}
-                        variant="primary"
-                     >
-                        {upgrade.level >= upgrade.maxLevel ? t('maxLevelReached') : t('buyUpgrade')}
-                     </Button>
+                     {upgrade.lock ? (
+                        <Tooltip content={t('upgradeLocked')}>
+                           <Button
+                              onClick={() => handlePurchase(upgrade.id)}
+                              disabled={points < currentCost || upgrade.level >= upgrade.maxLevel || upgrade.lock}
+                              className={`mt-2 text-white
+            ${upgrade.level >= upgrade.maxLevel
+                                    ? 'bg-green-900/50 hover:bg-green-900/50 cursor-not-allowed'
+                                    : upgrade.lock
+                                       ? 'bg-neutral-900 hover:bg-neutral-900 cursor-default'
+                                       : points < currentCost
+                                          ? 'bg-neutral-600 hover:bg-neutral-600 cursor-default'
+                                          : 'bg-primary hover:bg-primary-dark'}`}
+                              variant="primary"
+                           >
+                              {upgrade.level >= upgrade.maxLevel ? t('maxLevelReached') : t('buyUpgrade')}
+                           </Button>
+                        </Tooltip>
+                     ) : (
+                        <Button
+                           onClick={() => handlePurchase(upgrade.id)}
+                           disabled={points < currentCost || upgrade.level >= upgrade.maxLevel || upgrade.lock} // Check if locked
+                           className={`mt-2 text-white
+         ${upgrade.level >= upgrade.maxLevel
+                                 ? 'bg-green-900/50 hover:bg-green-900/50 cursor-not-allowed'
+                                 : upgrade.lock
+                                    ? 'bg-neutral-900 hover:bg-neutral-900 cursor-default'
+                                    : points < currentCost
+                                       ? 'bg-neutral-600 hover:bg-neutral-600 cursor-default'
+                                       : 'bg-primary hover:bg-primary-dark'}`}
+                           variant="primary"
+                        >
+                           {upgrade.level >= upgrade.maxLevel ? t('maxLevelReached') : t('buyUpgrade')}
+                        </Button>
+                     )}
                   </div>
                );
             })}
@@ -191,7 +212,7 @@ const Upgrades = () => {
          {showToast && (
             <Toast
                message={toastMessage}
-               type="error"
+               type="success"
                onClose={() => setShowToast(false)}
             />
          )}

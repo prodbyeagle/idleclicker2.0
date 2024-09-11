@@ -4,8 +4,8 @@
       {
          "id": 3,
          "name": "Double Click",
-         "cost": 25,
-         "costMultiplier": 3,
+         "cost": 10,
+         "costMultiplier": 2,
          "effect": "Double the value of each manual click",
          "rarity": "common",
          "maxLevel": 50,
@@ -19,26 +19,9 @@
          "unlocked": false
       },
       {
-         "id": 4,
-         "name": "Click Frenzy",
-         "cost": 100,
-         "costMultiplier": 2,
-         "effect": "Increase click value by 50% for a short duration",
-         "rarity": "rare",
-         "maxLevel": 20,
-         "levels": {
-            "1": "Increase click value by 50% for 5 seconds",
-            "2": "Increase click value by 100% for 5 seconds",
-            "3": "Increase click value by 150% for 5 seconds",
-            "20": "Increase click value by 500% for 10 seconds"
-         },
-         "level": 0,
-         "unlocked": false
-      },
-      {
          "id": 5,
          "name": "Auto Clicker",
-         "cost": 200,
+         "cost": 200000,
          "costMultiplier": 5,
          "effect": "Automatically clicks every second",
          "rarity": "epic",
@@ -50,6 +33,7 @@
             "10": "Clicks once every 0.5 seconds"
          },
          "level": 0,
+         "lock": false,
          "unlocked": false
       },
       {

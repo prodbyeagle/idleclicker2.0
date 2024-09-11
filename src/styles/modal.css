@@ -1,0 +1,44 @@
+/* modal.css */
+
+/* Base styles for the modal overlay */
+.modal-overlay {
+   position: fixed;
+   inset: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   backdrop-filter: blur(10px);
+   transition: opacity 0.5s ease, visibility 0.5s ease;
+   opacity: 0;
+   visibility: hidden;
+   pointer-events: none;
+}
+
+/* Show the modal */
+.modal-overlay.open {
+   opacity: 1;
+   visibility: visible;
+   pointer-events: auto;
+}
+
+/* Base styles for the modal content */
+.modal-content {
+   background-color: rgba(35, 35, 35, 0.9);
+   color: #fff;
+   padding: 1.5rem;
+   border-radius: 0.5rem;
+   transform: scale(0.95);
+   transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* Show the modal content */
+.modal-overlay.open .modal-content {
+   transform: scale(1);
+   opacity: 1;
+}
+
+/* Hide the modal content */
+.modal-content.hidden {
+   opacity: 0;
+   transform: scale(0.95);
+}

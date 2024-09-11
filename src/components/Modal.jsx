@@ -1,30 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import '../styles/modal.css'; // Import the CSS file
 
+/**
+ * Modal component represents a modal dialog that displays content and can be opened or closed.
+ *
+ * @param {Object} props - Component properties.
+ * @param {boolean} props.isOpen - Boolean indicating if the modal is open.
+ * @param {Function} props.onClose - Function to call when the modal should be closed.
+ * @param {React.ReactNode} props.children - Content to be displayed inside the modal.
+ *
+ * @component
+ */
 const Modal = ({ isOpen, onClose, children }) => {
-   const [show, setShow] = useState(false);
    const { t } = useTranslation();
 
    useEffect(() => {
-      if (isOpen) {
-         setShow(true);
-      } else {
-         const timer = setTimeout(() => setShow(false), 400);
+      if (!isOpen) {
+         const timer = setTimeout(() => onClose(), 500);
          return () => clearTimeout(timer);
       }
-   }, [isOpen]);
-
-   if (!show && !isOpen) return null;
+   }, [isOpen, onClose]);
 
    return (
       <div
-         className={`fixed inset-0 flex justify-center items-center backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22, 1, 0.36, 1)] ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-         style={{ transitionDelay: isOpen ? '0s' : '0.2s' }}
+         className={`modal-overlay ${isOpen ? 'open' : ''}`}
          onClick={onClose}
       >
          <div
-            className={`bg-neutral-800/70 text-neutral-200 p-6 rounded-lg transition-all transform duration-500 ease-[cubic-bezier(0.22, 1, 0.36, 1)] ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'} `}
-            style={{ backfaceVisibility: 'hidden' }}
+            className={`modal-content ${!isOpen ? 'hidden' : ''}`}
             onClick={(e) => e.stopPropagation()}
          >
             {children}

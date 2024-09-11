@@ -17,9 +17,16 @@ const formatNumber = (value) => {
    const suffix = suffixes[tier - 1];
    const scale = Math.pow(10, tier * 3);
 
-   // Format the number to one decimal place if needed
+   // Format the number to two decimal places
    const scaled = value / scale;
-   return scaled.toFixed(2) + suffix;
+   let formattedNumber = scaled.toFixed(2);
+
+   // If the number ends with ".00", remove the decimal part
+   if (formattedNumber.endsWith('.00')) {
+      formattedNumber = Math.round(scaled).toString();
+   }
+
+   return formattedNumber + suffix;
 };
 
 export default formatNumber;
